@@ -14,7 +14,7 @@ def compile_notebooks():
             [
                 "jupyter",
                 "nbconvert",
-                "--RegexRemovePreprocessor.patterns",  # =[#rm]""",
+                "--RegexRemovePreprocessor.patterns",
                 "#rm.*",
                 "--to",
                 "html",
