@@ -114,12 +114,17 @@ const theme = extendTheme({
       ".hll": {
         backgroundColor: mode("#F0F0F0", "#A0A0A0")(props)
       },
-      ".highlight": { background: mode("#F0F0F0", "#303030")(props) },
+      ".highlight": {
+        background: mode("#F0F0F0", "#303030")(props),
+
+      },
+
       ...objectMap(colorset, function (val) {
         return {
           color: mode("#" + val.color, "#" + invertHex(val.color))(props),
           fontWeight: val.fontWeight || "normal",
           fontStyle: val.fontStyle || "normal",
+
         };
       })
     }),

@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 
-const parseFirstP = (htmlContent) =>{
+const parseFirstP = (htmlContent) => {
   const firstP = htmlContent.split("<p>")[1].split("</p>")[0];
   // firstP is form of !key:value\n!key:value... parse it
   const firstPObj = {};
@@ -25,27 +25,40 @@ const after4divs = (htmlContent) => {
 
 
 
-exports.createPages = async ({actions }) => {
+exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
   // read html files from ./src/notebooks/
   const notebooks = fs.readdirSync("./src/notebooks/compiled_htmls");
   console.log(notebooks);
+  const all_notebooks = [];
   notebooks.forEach((html) => {
     if (html.endsWith(".html")) {
       const htmlPath = `./src/notebooks/compiled_htmls/${html}`;
       const htmlContent = fs.readFileSync(htmlPath, "utf8");
       //console.log(htmlContent);
       const htmlName = html.replace(".html", "");
+      all_notebooks.push(parseFirstP(htmlContent));
       createPage({
         path: `/notes/${htmlName}`,
         component: require.resolve("./src/templates/notebooksTemplates.js"),
         context: {
-          htmlArgs : parseFirstP(htmlContent),
-          htmlContent : after4divs(htmlContent),
+          htmlArgs: parseFirstP(htmlContent),
+          htmlContent: after4divs(htmlContent),
         },
       });
     }
   });
+
+  createPage(
+    {
+      path: `/`,
+      component: require.resolve("./src/templates/index.js"),
+      context: {
+        allNotebooks: all_notebooks,
+      },
+    }
+  )
+
 }
 
 // const getNotebooks = () =>{

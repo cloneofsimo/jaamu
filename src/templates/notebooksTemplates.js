@@ -38,10 +38,10 @@ const NotebookTemplate = (props) => {
           Toggle {colorMode === "light" ? "Dark" : "Light"}
         </Button>
         <Header />
-        <h1>{title}</h1>
-        <h2>{author}</h2>
-        <h3>{tag}</h3>
-        <p>{abstract}</p>
+        <h1>Title: {title}</h1>
+        <h2>Author: {author}</h2>
+        <h3>Tags: {tag}</h3>
+        <p>Abstract: {abstract}</p>
         
         <Container>
           <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
