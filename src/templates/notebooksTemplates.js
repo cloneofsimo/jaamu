@@ -19,8 +19,10 @@ const NotebookTemplate = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { pageContext } = props;
-  const { htmlName, htmlContent } = pageContext;
+  const { htmlArgs, htmlContent } = pageContext;
   const color = useColorModeValue("black", "gray.800");
+
+  const {author, tag, title, abstract} = htmlArgs;
 
   console.log(pageContext);
   return (
@@ -35,8 +37,12 @@ const NotebookTemplate = (props) => {
         >
           Toggle {colorMode === "light" ? "Dark" : "Light"}
         </Button>
-        <h1>{htmlName}</h1>
         <Header />
+        <h1>{title}</h1>
+        <h2>{author}</h2>
+        <h3>{tag}</h3>
+        <p>{abstract}</p>
+        
         <Container>
           <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
         </Container>

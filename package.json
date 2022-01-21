@@ -8,7 +8,7 @@
       "gatsby"
     ],
     "scripts": {
-      "develop": "gatsby develop",
+      "develop": "python compile_notebooks.py && gatsby develop",
       "start": "python compile_notebooks.py && gatsby develop",
       "build": "python compile_notebooks.py && gatsby build",
       "serve": "gatsby serve",
