@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-
 const parseFirstP = (htmlContent) => {
   const firstP = htmlContent.split("<p>")[1].split("</p>")[0];
   // firstP is form of !key:value\n!key:value... parse it
@@ -10,20 +9,16 @@ const parseFirstP = (htmlContent) => {
     const key = line.split(":")[0];
     const value = line.split(":")[1];
     firstPObj[key] = value;
-  }
-  );
+  });
   return firstPObj;
-}
+};
 
-const after4divs = (htmlContent) => {
+const afterdivs = (htmlContent) => {
   const divs = htmlContent.split("</div>");
-  const after5divs = divs.slice(4);
-  const after5divsStr = after5divs.join("</div>");
-  return after5divsStr;
-}
-
-
-
+  const afdiv = divs.slice(3);
+  const afdivStr = afdiv.join("</div>");
+  return afdivStr;
+};
 
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
@@ -43,23 +38,20 @@ exports.createPages = async ({ actions }) => {
         component: require.resolve("./src/templates/notebooksTemplates.js"),
         context: {
           htmlArgs: parseFirstP(htmlContent),
-          htmlContent: after4divs(htmlContent),
+          htmlContent: afterdivs(htmlContent),
         },
       });
     }
   });
 
-  createPage(
-    {
-      path: `/`,
-      component: require.resolve("./src/templates/index.js"),
-      context: {
-        allNotebooks: all_notebooks,
-      },
-    }
-  )
-
-}
+  createPage({
+    path: `/`,
+    component: require.resolve("./src/templates/index.js"),
+    context: {
+      allNotebooks: all_notebooks,
+    },
+  });
+};
 
 // const getNotebooks = () =>{
 
