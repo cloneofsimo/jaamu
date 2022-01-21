@@ -1,0 +1,89 @@
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>author: Simo Ryu
+tag: Tutorial
+title: How to use JaaMu
+abstract: In this post, we will introduce the JaaMu framework and how to use it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Welcome-to-JaaMu!">Welcome to JaaMu!<a class="anchor-link" href="#Welcome-to-JaaMu!">&#182;</a></h1><p>JaaMu: Jupyter as a Markup language is a tool to export Jupyter notebooks as HTML, supported by rich features from React and Gatsby.</p>
+<p>These blog posts are statically generated from Jupyter notebooks using JaaMu.</p>
+<h2 id="Why-use-JaaMu?">Why use JaaMu?<a class="anchor-link" href="#Why-use-JaaMu?">&#182;</a></h2><p>Not everyone is an engineer, nor even a programmer. Should you open a jupyter notebook kernel just to read a blog post? Absolutely not.</p>
+<p>You might ask, "but <code>nbconvert</code> already supports out-of-the-box HTML export, why not use that?"</p>
+<p>Indeed, with nbconvert,</p>
+<div class="highlight"><pre><span></span>jupyter nbconvert --to html --template basic notebook.ipynb
+</pre></div>
+<p>Will produce a static HTML file.</p>
+<p>However,</p>
+<ul>
+<li>Are they in any way beautiful?</li>
+<li>Are they react-integrated, with rich Chakra-UI components?</li>
+<li>Do they have functiallity to interact with the notebook with light-weight CDN libraries - driven components?</li>
+<li>Do they automatically parse metadata to summarize the content, and generate a summary page?</li>
+<li>Do they support Katex-rendered math?</li>
+</ul>
+<p>... I did not think so.</p>
+<p>Below is all the feature that JaaMu provides.</p>
+<h2 id="1.-Cell-Outputs">1. Cell Outputs<a class="anchor-link" href="#1.-Cell-Outputs">&#182;</a></h2><p>JaaMu is currently tested with plotly, matplotlib and bokeh. By default, <code>code cell</code> of the notebook will be outputted.</p>
+<p>If you wish to not render some cell, start the cell with <code>#rm</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>3
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="This-is-Second">This is Second<a class="anchor-link" href="#This-is-Second">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>hi</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+ 
+

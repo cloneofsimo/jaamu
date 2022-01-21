@@ -1,16 +1,14 @@
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>author: Simo Ryu, 라벤더
-tag: Math, Numerical-Analysis, Algorithm
+tag: Math
 title: Convergence of Trigonometric Harmonic Summations
 abstract: Not all summation of decreasing, harmonic, oscillating functions converges.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Studying from MSE, people often come across various
 problems related to trigonometric series. Some problems tend to be
@@ -60,6 +58,38 @@ $$<div class="highlight"><pre><span></span><span class="kn">import</span> <span 
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">plot</span><span class="p">,</span> <span class="n">iplot</span><span class="p">,</span> <span class="n">init_notebook_mode</span>
+<span class="n">init_notebook_mode</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="n">eles</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">cumuls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sums</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">eles</span><span class="p">:</span>
+    <span class="n">sums</span> <span class="o">+=</span> <span class="n">ele</span>
+    <span class="n">cumuls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sums</span><span class="p">)</span>
+
+<span class="n">index_samples</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">4000</span><span class="p">)</span> <span class="c1"># Because, you know, web experience should be light-weight...</span>
+<span class="n">index_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">index_samples</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">cumuls</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ys</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sin(x^2)/x&#39;</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -125,8 +155,7 @@ if (outputEl) {{
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This seems to certainly converge. Indeed, one can prove that it does.
 However, if we plot</p>
@@ -158,6 +187,35 @@ $$<p>for $\alpha = 0.1$</p>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="n">eles</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">cumuls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sums</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">eles</span><span class="p">:</span>
+    <span class="n">sums</span> <span class="o">+=</span> <span class="n">ele</span>
+    <span class="n">cumuls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sums</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">index_samples</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">4000</span><span class="p">)</span>
+<span class="n">index_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">index_samples</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">cumuls</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ys</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sin(x^2)/x^0.1&#39;</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">traceorder</span><span class="o">=</span><span class="s1">&#39;reversed&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -199,8 +257,7 @@ if (outputEl) {{
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>So, we can see suspect that the series might not converge for $\alpha = 0.1$. Just to prove point, let's plot the sequence upto 50M.</p>
 <p>(At this point you might just be asking, "Isn't floating operation error a concern?", Well, it turns out to be not a concern at all. Using error propagation formula, if there is a error of $10^{-9}$ , we can expect there to be about $10^{-9} * 5 * 10^8 \sim 0.5$ of error. Which is well below the magnitude of values)</p>
@@ -209,6 +266,35 @@ if (outputEl) {{
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">50000000</span>
+<span class="n">eles</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">cumuls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sums</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">eles</span><span class="p">:</span>
+    <span class="n">sums</span> <span class="o">+=</span> <span class="n">ele</span>
+    <span class="n">cumuls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sums</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">index_samples</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">4000</span><span class="p">)</span>
+<span class="n">index_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">index_samples</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">cumuls</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">index_sorted</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ys</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sin(x^2)/x^0.1&#39;</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">traceorder</span><span class="o">=</span><span class="s1">&#39;reversed&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -250,16 +336,14 @@ if (outputEl) {{
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We will have a look why this is the case.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Abel's-Summation-Formula">Abel's Summation Formula<a class="anchor-link" href="#Abel's-Summation-Formula">&#182;</a></h1><p>Suppose that we thoroughly know about the series $a_{n}$, so that the
 $\sum_{n=1}^{m}a_{n}f(n)$</p>
@@ -304,15 +388,13 @@ $$<p>which is not $o(1)$. Thus we are done.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Discrete-Gauss-summations">Discrete Gauss summations<a class="anchor-link" href="#Discrete-Gauss-summations">&#182;</a></h3><p>Now we are left to prove that discrete gauss sums, have fluctuation
 of about $\sqrt{N}$ infinitely often. This is intuitively true, because
@@ -348,7 +430,7 @@ $$$$+\sum_{u\neq v,w\neq r}\text{cov}(X_{u}\overline{X_{v}}+\overline{X_{u}}X_{v
 $$<p>From the above argument, all the covariance part is really just of
 $O(1/D)$, and the number of summations is of function $H$, therefore
 is ignorable.</p>
-<p>(The last summation count is $O(H^{4}).$This implies that the total
+<p>(The last summation count is $O(H^{4})$. This implies that the total
 value is $V(|\sum X_{n}|)=H^{2}+O(H^{4}/D)=H^{2}(1+o(1)))$
 Finally, we have that</p>
 $$\mathbb{E}(|\sum_{n=1}^{H}X_{n}|^{4})&gt;V(|\sum_{n=1}^{H}X_{n}|^{2})=H^{2}(1+o(1))
@@ -358,27 +440,6 @@ $$<p>infinitely often, thus we have the final result.</p>
 <p>As I finish off, notice that at * one can expect cancellation to
 happen with $O(H^{1/2})$ leftovers. If that is the case, one can reduce
 $\alpha$ to $0.5-\epsilon$. Thats a problem to solve later.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 
 </div>
 </div>
