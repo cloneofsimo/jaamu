@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./header";
 import Footer from "./footer";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Stack } from "@chakra-ui/react";
 import { theme } from "../theme";
 import ReactDOM from "react-dom";
 
@@ -20,27 +20,42 @@ const NotebookTemplate = (props) => {
 
   const { pageContext } = props;
   const { htmlArgs, htmlContent } = pageContext;
-  const color = useColorModeValue("black", "gray.800");
+  const color = useColorModeValue("black", "darkblue.800");
 
   const { author, tag, title, abstract } = htmlArgs;
 
   console.log(pageContext);
   return (
     <div>
-      <h1>Hi!</h1>
+      <Header />
       <Button
         position="fixed"
         right="1rem"
         top="1rem"
+        zIndex={100}
         onClick={toggleColorMode}
       >
         Toggle {colorMode === "light" ? "Dark" : "Light"}
       </Button>
-      <Header />
-      <h1>Title: {title}</h1>
-      <h2>Author: {author}</h2>
-      <h3>Tags: {tag}</h3>
-      <p>Abstract: {abstract}</p>
+
+      <Stack
+        align="center"
+        spacing="5"
+        py="10"
+        marginTop="3em"
+        marginLeft="0.5em"
+      >
+        <Heading as="h1">{title}</Heading>
+        <Text maxWidth="45ch" textAlign="left">
+          Written by <strong>{author} </strong>
+        </Text>
+        <Text maxWidth="45ch" textAlign="left">
+          <strong>Topic</strong> {tag}
+        </Text>
+        <Text maxWidth="45ch" textAlign="left">
+          <div dangerouslySetInnerHTML={{ __html: abstract }} />
+        </Text>
+      </Stack>
 
       <Container maxW="container.xl">
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />

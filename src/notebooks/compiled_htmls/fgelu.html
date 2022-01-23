@@ -1,0 +1,189 @@
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>author: Simo Ryu
+tag: research
+title: Is that a faster GELU?
+abstract: We have a deeper look at recent post by Daniel de Kok in twitter (<a href="https://twitter.com/danieldekok/status/1484898130441166853">https://twitter.com/danieldekok/status/1484898130441166853</a>). Is that function a faster GELU?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Recent twitter post by @danieldekok (<a href="https://twitter.com/danieldekok/status/1484898130441166853">https://twitter.com/danieldekok/status/1484898130441166853</a>) mentions that there is a faster version of the GELU activation function. He mentions:</p>
+<p><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Did anyone try this activation function? It is very similar to GELU and Swish, but has the benefit that it can be implemented easily using SIMD on modern CPUs. <a href="https://t.co/4WytEyhueD">pic.twitter.com/4WytEyhueD</a></p>&mdash; Daniël de Kok 💉💉 (@danieldekok) <a href="https://twitter.com/danieldekok/status/1484898130441166853?ref_src=twsrc%5Etfw">January 22, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The function looks like this:</p>
+$$
+y = 0.5 x (1 + \frac{x}{\sqrt{1 + x^2}})
+$$<p>We will compare the performance and efficiency of GELU and the faster version of GELU. From now on, the faster GELU will be named DaniGELU.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="1.-Efficiency">1. Efficiency<a class="anchor-link" href="#1.-Efficiency">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Is the DaniGELU function faster than GELU? Let's compare it with pytorch.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># we would normally define it as follows:</span>
+
+<span class="k">class</span> <span class="nc">DaniGELU</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Activation such that:</span>
+<span class="sd">    $$</span>
+<span class="sd">    y = 0.5 x (1 + \frac{x}{\sqrt{1 + x^2}})</span>
+<span class="sd">    $$</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DaniGELU</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">gelu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">GELU</span><span class="p">()</span>
+<span class="n">dani_gelu</span> <span class="o">=</span> <span class="n">DaniGELU</span><span class="p">()</span>
+
+<span class="c1"># test</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gelu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dani_gelu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>-0.1573210209608078
+-0.14043045043945312
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># compare time performance</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># test dain_gelu time performance</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="n">dani_gelu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dani_gelu time:&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+
+<span class="c1"># test gelu time performance</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="n">gelu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;gelu time:&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>dani_gelu time: 0.12563276290893555
+gelu time: 0.017089366912841797
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, I doubt that the difference is caused by the actual logic of the function. Clearly, difference is caused by the implementation of the function.
+Inside, GeLU is implemented with c++ backend, and the faster version is implemented with cuda backend. However, DaniGELU above is implemented with python.</p>
+<p>Fair comparison would be to implment the function with c++, and compare the performance. Let's have a look at just that.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;torch/torch.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;torch/script.h&gt;</span><span class="cp"></span>
+
+
+<span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">GELU</span><span class="p">(</span><span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">torch</span><span class="o">::</span><span class="n">erf</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">torch</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)));</span>
+<span class="p">}</span>
+
+
+<span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">daniGELU</span><span class="p">(</span><span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">torch</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)));</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">torch</span><span class="o">::</span><span class="n">DeviceType</span> <span class="n">device_type</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">torch</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">is_available</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">device_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">::</span><span class="n">kCUDA</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">device_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">::</span><span class="n">kCPU</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">torch</span><span class="o">::</span><span class="n">Device</span> <span class="n">device</span><span class="p">(</span><span class="n">device_type</span><span class="p">);</span>
+
+  <span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">::</span><span class="n">randn</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="n">device</span><span class="p">);</span>
+  <span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">geLU_out</span> <span class="o">=</span> <span class="n">GELU</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span> <span class="n">daniGELU_out</span> <span class="o">=</span> <span class="n">daniGELU</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;GELU: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">geLU_out</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;daniGELU: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">daniGELU_out</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+ 
+

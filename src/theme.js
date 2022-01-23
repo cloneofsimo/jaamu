@@ -73,7 +73,7 @@ const colorset = {
   ".vi": { color: "19177C" } /* Name.Variable.Instance */,
   ".vm": { color: "19177C" } /* Name.Variable.Magic */,
   ".il": { color: "666666" } /* Literal.Number.Integer.Long */,
-  p: { color: "666666" } /* Literal.Number.Integer.Long */,
+  p: { color: "333333" } /* Literal.Number.Integer.Long */,
 };
 
 function invertHex(hex) {
@@ -99,15 +99,20 @@ const config = {
   useSystemColorMode: true,
 };
 
+const darkblue = "#0B184F";
+
 const theme = extendTheme({
   styles: {
     global: (props) => ({
       root: {
-        backgroundColor: props.colorMode === "dark" ? "white" : "black",
+        backgroundColor: props.colorMode === "dark" ? "white" : "blue",
+        color: props.colorMode === "dark" ? "white" : "blue",
       },
+
       body: {
         fontSize: "18px",
         color: props.colorMode === "dark" ? "white" : "black",
+        backgroundColor: props.colorMode === "dark" ? darkblue : "white",
         lineHeight: "tall",
       },
       span: {
@@ -132,6 +137,30 @@ const theme = extendTheme({
         whiteSpace: "pre-wrap",
         color: props.colorMode === "dark" ? "white" : "black",
       },
+      "div.twitter-tweet": {
+        margin: "0 auto",
+      },
+
+      //table html
+      table: {
+        //center table
+        border: "1px solid black",
+        borderCollapse: "collapse",
+        textAlign: "center",
+        marginLeft: "auto",
+        marginRight: "auto",
+      },
+      "div.output th, div.output td, div.output tr": {
+        //center table
+        padding: "5px",
+        border: "1px solid black",
+      },
+      ".output_html": {
+        color: props.colorMode === "dark" ? "white" : "black",
+        // center element
+        margin: "auto",
+      },
+
       h1: {
         fontSize: "2.5em",
         fontWeight: "bold",

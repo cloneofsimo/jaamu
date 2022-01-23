@@ -7,7 +7,8 @@ const parseFirstP = (htmlContent) => {
   const firstPArr = firstP.split("\n");
   firstPArr.forEach((line) => {
     const key = line.split(":")[0];
-    const value = line.split(":")[1];
+    // rest of line is value
+    const value = line.split(":").slice(1).join(":");
     firstPObj[key] = value;
   });
   return firstPObj;
@@ -32,12 +33,14 @@ exports.createPages = async ({ actions }) => {
       const htmlContent = fs.readFileSync(htmlPath, "utf8");
       //console.log(htmlContent);
       const htmlName = html.replace(".html", "");
-      all_notebooks.push(parseFirstP(htmlContent));
+      const args = parseFirstP(htmlContent);
+      args["htmlName"] = `/notes/${htmlName}`;
+      all_notebooks.push(args);
       createPage({
         path: `/notes/${htmlName}`,
         component: require.resolve("./src/templates/notebooksTemplates.js"),
         context: {
-          htmlArgs: parseFirstP(htmlContent),
+          htmlArgs: args,
           htmlContent: afterdivs(htmlContent),
         },
       });
