@@ -30,9 +30,16 @@ exports.createPages = async ({ actions }) => {
   notebooks.forEach((html) => {
     if (html.endsWith(".html")) {
       const htmlPath = `./src/notebooks/compiled_htmls/${html}`;
+      
       const htmlContent = fs.readFileSync(htmlPath, "utf8");
+      
       //console.log(htmlContent);
       const htmlName = html.replace(".html", "");
+
+      const tocPath = `./src/notebooks/meta/${htmlName}.json`;
+      const tocContent = fs.readFileSync(tocPath, "utf8");
+      const tocJson = JSON.parse(tocContent);
+
       const args = parseFirstP(htmlContent);
       args["htmlName"] = `/notes/${htmlName}`;
       all_notebooks.push(args);
@@ -42,6 +49,7 @@ exports.createPages = async ({ actions }) => {
         context: {
           htmlArgs: args,
           htmlContent: afterdivs(htmlContent),
+          tocList: tocJson['TOC'],
         },
       });
     }

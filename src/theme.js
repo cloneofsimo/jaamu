@@ -4,7 +4,7 @@ import Container from "./chakra/container";
 
 const italic = "italic";
 const bold = "bold";
-
+const BASEMARGIN = "1.0rem";
 const colorset = {
   ".c": { color: "408080", fontStyle: italic } /* Comment */,
   ".err": { border: "1px solid FF0000" } /* Error */,
@@ -99,24 +99,38 @@ const config = {
   useSystemColorMode: true,
 };
 
-const darkblue = "#0B184F";
+const darkblue = "#0B1833";
+const darkdarkblue = "#060922";
+const lightblue = "#E6E6FF";
 
 const theme = extendTheme({
   styles: {
     global: (props) => ({
       root: {
-        backgroundColor: props.colorMode === "dark" ? "white" : "blue",
+        backgroundColor: props.colorMode === "dark" ? darkblue : "white",
         color: props.colorMode === "dark" ? "white" : "blue",
+      },
+
+      "div": {
+        backgroundColor: props.colorMode === "dark" ? darkblue : "white",
+        //color: props.colorMode === "dark" ? darkblue : "white",
+      },
+
+      "div.navitem":{
+        backgroundColor: props.colorMode === "dark" ?  darkdarkblue: lightblue,
+      },
+      ".navbar":{
+        backgroundColor: props.colorMode === "dark" ? darkblue : "white",
       },
 
       body: {
         fontSize: "18px",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
         backgroundColor: props.colorMode === "dark" ? darkblue : "white",
         lineHeight: "tall",
       },
       span: {
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
       ".hll": {
         backgroundColor: mode("#F0F0F0", "#A0A0A0")(props),
@@ -129,22 +143,33 @@ const theme = extendTheme({
         paddingLeft: "2em",
       },
       pre: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         display: "block",
         padding: "8.5px",
         wordBreak: "break-all",
         wordWrap: "break-word",
         color: "#333333",
         whiteSpace: "pre-wrap",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
       "div.twitter-tweet": {
         margin: "0 auto",
       },
+      "a.toc-a" : {
+        "&:hover": {
+          color:  props.colorMode === "dark" ? "lightblue" : darkblue,
+          fontWeight: "bold",
+        },
+      },
 
       //table html
       table: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         //center table
-        border: "1px solid black",
+        border:
+          props.colorMode === "dark" ? "1px solid white" : "1px solid black",
         borderCollapse: "collapse",
         textAlign: "center",
         marginLeft: "auto",
@@ -153,33 +178,44 @@ const theme = extendTheme({
       "div.output th, div.output td, div.output tr": {
         //center table
         padding: "5px",
-        border: "1px solid black",
+        border:
+          props.colorMode === "dark" ? "1px solid white" : "1px solid black",
       },
       ".output_html": {
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
         // center element
         margin: "auto",
       },
-
+      iframe:{
+        margin: "0 auto",
+      },
       h1: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         fontSize: "2.5em",
         fontWeight: "bold",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
       h2: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         fontSize: "2em",
         fontWeight: "bold",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
       h3: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         fontSize: "1.5em",
         fontWeight: "bold",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
       h4: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
         fontSize: "1.25em",
         fontWeight: "bold",
-        color: props.colorMode === "dark" ? "white" : "black",
+        color: props.colorMode === "dark" ? "white" : darkblue,
       },
 
       ...objectMap(colorset, function (val) {

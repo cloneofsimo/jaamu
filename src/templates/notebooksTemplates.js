@@ -5,6 +5,9 @@ import { ChakraProvider, Stack } from "@chakra-ui/react";
 import { theme } from "../theme";
 import ReactDOM from "react-dom";
 
+import { Link } from "gatsby";
+
+
 import {
   useColorModeValue,
   Container,
@@ -14,20 +17,33 @@ import {
   Text,
   Divider,
 } from "@chakra-ui/react";
+import SimpleSidebar from "./navbar";
+
+
+
+
+
+
+
+
+
 
 const NotebookTemplate = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { pageContext } = props;
-  const { htmlArgs, htmlContent } = pageContext;
+  const { htmlArgs, htmlContent, tocList } = pageContext;
   const color = useColorModeValue("black", "darkblue.800");
+
+  //console.log(tocList)
 
   const { author, tag, title, abstract } = htmlArgs;
 
   console.log(pageContext);
   return (
-    <div>
+    <SimpleSidebar tocList = {tocList}>
       <Header />
+      
       <Button
         position="fixed"
         right="1rem"
@@ -62,7 +78,7 @@ const NotebookTemplate = (props) => {
       </Container>
 
       <Footer />
-    </div>
+      </SimpleSidebar>
   );
 };
 

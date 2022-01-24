@@ -20,6 +20,8 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
+import SimpleSidebar from "./navbar";
+
 const IndexTemplate = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -30,6 +32,7 @@ const IndexTemplate = (props) => {
   console.log(allNotebooks);
   return (
     <div>
+      <SimpleSidebar>
       <Container size="full">
         <Stack align="center" spacing="5" py="10">
           <Heading as="h1">Welcome To JaaMu!</Heading>
@@ -45,7 +48,7 @@ const IndexTemplate = (props) => {
           </Text>
         </Stack>
       </Container>
-      <Container maxW="container.xl">
+      <Container>
         <VStack spacing={4} align="center" justify="center">
           {allNotebooks.map((notebook) => (
             <Box
@@ -72,6 +75,9 @@ const IndexTemplate = (props) => {
           ))}
         </VStack>
       </Container>
+      <Footer />
+      </SimpleSidebar>
+      
     </div>
   );
 };
