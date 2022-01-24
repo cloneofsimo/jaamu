@@ -7,7 +7,6 @@ import ReactDOM from "react-dom";
 
 import { Link } from "gatsby";
 
-
 import {
   useColorModeValue,
   Container,
@@ -18,15 +17,6 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import SimpleSidebar from "./navbar";
-
-
-
-
-
-
-
-
-
 
 const NotebookTemplate = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -41,14 +31,14 @@ const NotebookTemplate = (props) => {
 
   console.log(pageContext);
   return (
-    <SimpleSidebar tocList = {tocList}>
+    <SimpleSidebar tocList={tocList}>
       <Header />
-      
+
       <Button
         position="fixed"
         right="1rem"
         top="1rem"
-        zIndex={100}
+        zIndex={1}
         onClick={toggleColorMode}
       >
         Toggle {colorMode === "light" ? "Dark" : "Light"}
@@ -78,7 +68,7 @@ const NotebookTemplate = (props) => {
       </Container>
 
       <Footer />
-      </SimpleSidebar>
+    </SimpleSidebar>
   );
 };
 

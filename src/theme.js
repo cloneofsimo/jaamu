@@ -99,7 +99,7 @@ const config = {
   useSystemColorMode: true,
 };
 
-const darkblue = "#0B1833";
+const darkblue = "#FF1833";
 const darkdarkblue = "#060922";
 const lightblue = "#E6E6FF";
 
@@ -111,15 +111,15 @@ const theme = extendTheme({
         color: props.colorMode === "dark" ? "white" : "blue",
       },
 
-      "div": {
-        backgroundColor: props.colorMode === "dark" ? darkblue : "white",
-        //color: props.colorMode === "dark" ? darkblue : "white",
-      },
+      // div: {
+      //   backgroundColor: props.colorMode === "dark" ? darkblue : "white",
+      //   //color: props.colorMode === "dark" ? darkblue : "white",
+      // },
 
-      "div.navitem":{
-        backgroundColor: props.colorMode === "dark" ?  darkdarkblue: lightblue,
+      "div.navitem": {
+        backgroundColor: props.colorMode === "dark" ? darkdarkblue : lightblue,
       },
-      ".navbar":{
+      ".navbar": {
         backgroundColor: props.colorMode === "dark" ? darkblue : "white",
       },
 
@@ -156,9 +156,9 @@ const theme = extendTheme({
       "div.twitter-tweet": {
         margin: "0 auto",
       },
-      "a.toc-a" : {
+      "a.toc-a": {
         "&:hover": {
-          color:  props.colorMode === "dark" ? "lightblue" : darkblue,
+          color: props.colorMode === "dark" ? "lightblue" : darkblue,
           fontWeight: "bold",
         },
       },
@@ -186,7 +186,7 @@ const theme = extendTheme({
         // center element
         margin: "auto",
       },
-      iframe:{
+      iframe: {
         margin: "0 auto",
       },
       h1: {
