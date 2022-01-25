@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./header";
 import Footer from "./footer";
 import { ChakraProvider, HStack, Stack } from "@chakra-ui/react";
 import { theme } from "../theme";
 import ReactDOM from "react-dom";
 
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 
 import {
   useColorModeValue,
@@ -27,82 +27,123 @@ import {
   WhatsappShareButton,
   WhatsappIcon,
   RedditShareButton,
-  RedditIcon
-} from 'react-share'
+  RedditIcon,
+} from "react-share";
+
+import { motion } from "framer-motion";
+
+const variants = {
+  open: { opacity: 1, y: 0, zIndex: 100 },
+  closed: { opacity: 0, y: "100vh", zIndex: 100 },
+};
+
 const NotebookTemplate = (props) => {
+  const [isOpen, setIsOpen] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { pageContext } = props;
-  const { htmlArgs, htmlContent, tocList } = pageContext;
+  const { path, htmlArgs, htmlContent, tocList } = pageContext;
   const color = useColorModeValue("black", "darkblue.800");
 
   //console.log(tocList)
   // window
   // here url
 
-
   const { author, tag, title, abstract } = htmlArgs;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   console.log(pageContext);
   return (
-    <SimpleSidebar tocList={tocList}>
-      <Header />
-
-      <Button
-        //marginRight = "1rem"
-        //left="1rem"
-        position="absolute"
-        right="1rem"
-        top="1rem"
-        zIndex={1}
-        onClick={toggleColorMode}
+    <div>
+      <motion.nav
+        animate={isOpen ? "open" : "closed"}
+        variants={variants}
+        zIndex={100}
+        transition={{ duration: 1.0 }}
       >
-        Toggle {colorMode === "light" ? "Dark" : "Light"}
-      </Button>
+        {/* blue background */}
+        <div
+          style={{
+            backgroundColor: "blue",
+            height: "100vh",
+            width: "100%",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: 100,
+            opacity: 1.0,
+          }}
+        />
+      </motion.nav>
+      <SimpleSidebar tocList={tocList}>
+        <Header />
 
-      <Stack
-        align="center"
-        spacing="5"
-        py="10"
-        marginTop="3em"
-        marginLeft="0.5em"
-      >
-        <Heading as="h1">{title}</Heading>
-        <Text maxWidth="45ch" textAlign="left">
-          Written by <strong>{author} </strong>
-        </Text>
-        <Text maxWidth="45ch" textAlign="left">
-          <strong>Topic</strong> {tag}
-        </Text>
-        <Text maxWidth="45ch" textAlign="left">
-          <div dangerouslySetInnerHTML={{ __html: abstract }} />
-        </Text>
-      </Stack>
+        <Button
+          //marginRight = "1rem"
+          //left="1rem"
+          position="absolute"
+          right="1rem"
+          top="1rem"
+          zIndex={1}
+          onClick={() => {
+            toggleColorMode();
+          }}
+        >
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
 
-      <Container maxW="container.md">
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-        <HStack p = '15px'>
-        <FacebookShareButton url={window.location.href}>
-          <FacebookIcon size={40} round={true} />
-        </FacebookShareButton>
+        <Stack
+          align="center"
+          spacing="5"
+          py="10"
+          marginTop="3em"
+          marginLeft="0.5em"
+        >
+          <Heading as="h1">{title}</Heading>
+          <Text maxWidth="45ch" textAlign="left">
+            Written by <strong>{author} </strong>
+          </Text>
+          <Text maxWidth="45ch" textAlign="left">
+            <strong>Topic</strong> {tag}
+          </Text>
+          <Text maxWidth="45ch" textAlign="left">
+            <div dangerouslySetInnerHTML={{ __html: abstract }} />
+          </Text>
+        </Stack>
 
-        <LinkedinShareButton url={window.location.href} >
-          <LinkedinIcon size={40} round={true} />
-        </LinkedinShareButton>
+        <Container maxW="container.md">
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          <Text fontSize="md" color="gray.500" marginTop={"30px"}>
+            Did you love this post? Share it with your friends!
+          </Text>
+          <HStack p="15px">
+            <FacebookShareButton url={path}>
+              <FacebookIcon size={40} round={true} />
+            </FacebookShareButton>
 
-        <RedditShareButton url={window.location.href} title={title} >
-          <RedditIcon size={40} round={true} />
-        </RedditShareButton>
+            <LinkedinShareButton url={path}>
+              <LinkedinIcon size={40} round={true} />
+            </LinkedinShareButton>
 
-        <WhatsappShareButton url={window.location.href} title={title}>
-          <WhatsappIcon size={40} round={true} />
-        </WhatsappShareButton>
-        </HStack>
-      </Container>
+            <RedditShareButton url={path} title={title}>
+              <RedditIcon size={40} round={true} />
+            </RedditShareButton>
 
+            <WhatsappShareButton url={path} title={title}>
+              <WhatsappIcon size={40} round={true} />
+            </WhatsappShareButton>
+          </HStack>
+        </Container>
 
-      <Footer />
-    </SimpleSidebar>
+        <Footer />
+      </SimpleSidebar>
+    </div>
   );
 };
 

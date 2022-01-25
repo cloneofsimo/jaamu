@@ -30,9 +30,9 @@ exports.createPages = async ({ actions }) => {
   notebooks.forEach((html) => {
     if (html.endsWith(".html")) {
       const htmlPath = `./src/notebooks/compiled_htmls/${html}`;
-      
+
       const htmlContent = fs.readFileSync(htmlPath, "utf8");
-      
+
       //console.log(htmlContent);
       const htmlName = html.replace(".html", "");
 
@@ -47,9 +47,10 @@ exports.createPages = async ({ actions }) => {
         path: `/notes/${htmlName}`,
         component: require.resolve("./src/templates/notebooksTemplates.js"),
         context: {
+          path: `/notes/${htmlName}`,
           htmlArgs: args,
           htmlContent: afterdivs(htmlContent),
-          tocList: tocJson['TOC'],
+          tocList: tocJson["TOC"],
         },
       });
     }
