@@ -58,7 +58,7 @@ export default function SimpleSidebar({ children, tocList }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh">
-      {/* //   {/* <SidebarContent
+    {/* //   {/* <SidebarContent
     //     onClose={() => onClose}
     //     display={{ base: "none", md: "block" }}
     //     tocList={tocList}
@@ -79,7 +79,7 @@ export default function SimpleSidebar({ children, tocList }) {
 
     //   mobilenav  
       <MobileNav display={{ base: "flex", md: 'none'  }} onOpen={onOpen} /> */}
-      <TocContent tocList={tocList} />
+      <TocContent  tocList={tocList} />
       <Box ml={{ base: 0 }} p="4">
         {children}
       </Box>
@@ -98,9 +98,9 @@ const LinkItems = [
 const TocContent = ({ tocList, ...rest }) => {
   return (
     <Box
-      borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      display={{ base: "none", md: "block" }}
+      
+        
+      display = {{ base: "none", xl: "block" }}
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
@@ -111,10 +111,10 @@ const TocContent = ({ tocList, ...rest }) => {
         <Text fontSize="2xl" fontWeight="bold" textAlign="center">
           JaaMu
         </Text>
-
+       
       </Flex>
       <Toc tocList={tocList} depth={0} />
-
+      
     </Box>
   );
 };

@@ -35,7 +35,9 @@ const NotebookTemplate = (props) => {
       <Header />
 
       <Button
-        position="fixed"
+        //marginRight = "1rem"
+        //left="1rem"
+        position = "absolute"
         right="1rem"
         top="1rem"
         zIndex={1}
@@ -63,7 +65,7 @@ const NotebookTemplate = (props) => {
         </Text>
       </Stack>
 
-      <Container maxW="container.xl">
+      <Container maxW="container.md">
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </Container>
 
