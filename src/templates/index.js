@@ -33,6 +33,18 @@ const IndexTemplate = (props) => {
   return (
     
       <SimpleSidebar>
+        <Button
+        //marginRight = "1rem"
+        //left="1rem"
+        position="absolute"
+        right="1rem"
+        top="1rem"
+        zIndex={1}
+        onClick={toggleColorMode}
+      >
+        Toggle {colorMode === "light" ? "Dark" : "Light"}
+
+      </Button>
         <Container size="xl">
           <Stack align="center" spacing="5" py="10">
             <Heading as="h1">Welcome To JaaMu!</Heading>

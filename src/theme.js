@@ -100,7 +100,7 @@ const config = {
   useSystemColorMode: true,
 };
 
-const darkblue = "#FF1833";
+const darkblue = "#0B3B8C";
 const darkdarkblue = "#060922";
 const lightblue = "#E6E6FF";
 

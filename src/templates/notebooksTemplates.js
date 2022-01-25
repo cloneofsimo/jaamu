@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./header";
 import Footer from "./footer";
-import { ChakraProvider, Stack } from "@chakra-ui/react";
+import { ChakraProvider, HStack, Stack } from "@chakra-ui/react";
 import { theme } from "../theme";
 import ReactDOM from "react-dom";
 
@@ -17,7 +17,18 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import SimpleSidebar from "./navbar";
-
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+  RedditShareButton,
+  RedditIcon
+} from 'react-share'
 const NotebookTemplate = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -26,6 +37,9 @@ const NotebookTemplate = (props) => {
   const color = useColorModeValue("black", "darkblue.800");
 
   //console.log(tocList)
+  // window
+  // here url
+
 
   const { author, tag, title, abstract } = htmlArgs;
 
@@ -37,7 +51,7 @@ const NotebookTemplate = (props) => {
       <Button
         //marginRight = "1rem"
         //left="1rem"
-        position = "absolute"
+        position="absolute"
         right="1rem"
         top="1rem"
         zIndex={1}
@@ -67,7 +81,25 @@ const NotebookTemplate = (props) => {
 
       <Container maxW="container.md">
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        <HStack p = '15px'>
+        <FacebookShareButton url={window.location.href}>
+          <FacebookIcon size={40} round={true} />
+        </FacebookShareButton>
+
+        <LinkedinShareButton url={window.location.href} >
+          <LinkedinIcon size={40} round={true} />
+        </LinkedinShareButton>
+
+        <RedditShareButton url={window.location.href} title={title} >
+          <RedditIcon size={40} round={true} />
+        </RedditShareButton>
+
+        <WhatsappShareButton url={window.location.href} title={title}>
+          <WhatsappIcon size={40} round={true} />
+        </WhatsappShareButton>
+        </HStack>
       </Container>
+
 
       <Footer />
     </SimpleSidebar>

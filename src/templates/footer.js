@@ -23,6 +23,7 @@ const katex_foot = String.raw`
   strict : "ignore",
   });
 </script>
+
 `;
 const ListHeader = ({ children }) => {
   return (
@@ -63,6 +64,9 @@ export default function Footer() {
   return (
     <Box>
 
+<div dangerouslySetInnerHTML={{ __html: katex_foot }} />
+
+
       <Container maxW={'6xl'} py={4} >
         <Stack direction={{ base: 'column', md: 'row' }} spacing={{ base: 3, md: 30 }} justifyContent={'end'}>
           <Link href={'https://www.corca.ai'} textAlign='center'>About us</Link>
@@ -97,7 +101,6 @@ export default function Footer() {
           </Stack>
         </Container>
       </Box>
-      <div dangerouslySetInnerHTML={{ __html: katex_foot }} />
     </Box>
   );
 }
