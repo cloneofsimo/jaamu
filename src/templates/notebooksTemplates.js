@@ -32,6 +32,9 @@ import {
 
 import { motion } from "framer-motion";
 
+const DARKDARKBLUE = "#060922";
+export {DARKDARKBLUE};
+
 const variants = {
   open: { opacity: 1, y: 0, zIndex: 100 },
   closed: { opacity: 0, y: "100vh", zIndex: 100 },
@@ -54,6 +57,7 @@ const NotebookTemplate = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(false);
+      console.log()
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -70,7 +74,7 @@ const NotebookTemplate = (props) => {
         {/* blue background */}
         <div
           style={{
-            backgroundColor: "blue",
+            backgroundColor: DARKDARKBLUE,
             height: "100vh",
             width: "100%",
             position: "fixed",

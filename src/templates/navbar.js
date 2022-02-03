@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import {
   IconButton,
   Box,
@@ -26,6 +26,22 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 
 const Toc = ({ tocList, depth }) => {
+  const [hideElement, setHideElement] = useState(false);
+
+  useEffect(() => {
+  
+    window.addEventListener("scroll", yScrollEvent);
+    return () => {
+      window.removeEventListener("scroll", yScrollEvent);
+    };
+  }, []);
+
+  const yScrollEvent = () => {
+    const scroll = document.getElementById(tocList["link"]?.slice(1))?.getBoundingClientRect();
+    console.log(tocList["link"]);
+    setHideElement(scroll?.top <= 0 && scroll?.bottom >= -300);
+  };
+
   // if list, then recurse
   //console.log(tocList)
   if ({}.toString.call(tocList) === "[object Array]") {
@@ -48,7 +64,7 @@ const Toc = ({ tocList, depth }) => {
   // if item, then return
   return (
     <li style={{ marginTop: "0.5rem" }}>
-      <a href={tocList["link"]} className="toc-a">
+      <a href={tocList["link"]} className="toc-a" style = {{fontWeight : hideElement ? "bold" : "normal"}}>
         {tocList["name"]}
       </a>
     </li>

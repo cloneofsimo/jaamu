@@ -11,6 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React from "react";
+import { getImage, StaticImage } from "gatsby-plugin-image";
 const BlogPostWithImage = ({
   author,
   title,
@@ -18,7 +19,13 @@ const BlogPostWithImage = ({
   link,
   tag,
   onclickfunc,
+  image
 }) => {
+  console.log(image)
+
+  const imgfile = typeof(image) == 'string' ? `/${image}` : "https://via.placeholder.com/400x300";
+  const imageX = getImage(imgfile)
+  console.log(imgfile)
   return (
     <Box
       w={"full"}
@@ -39,12 +46,17 @@ const BlogPostWithImage = ({
       >
         <Image
           src={
-            "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            
+           // if iamge is not none, then use image
+           imgfile
+
+
+            //`../images/${image}`
           }
           width="100%"
           height="100%"
           objectFit={"cover"}
-          zIndex={-1}
+          zIndex={-1000}
         />
       </Box>
       <Stack>

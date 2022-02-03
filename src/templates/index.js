@@ -23,45 +23,63 @@ import {
 
 import SimpleSidebar from "./navbar";
 import BlogPostWithImage from "./blogcard";
+import DARKDARKBLUE from "./notebooksTemplates";
 
 const variants = {
-  open: { opacity: 1, x: 0 },
-  closed: { opacity: 1, x: "-140%" },
+  open: { opacity: 1, y: 0, zIndex: 100, display: "block"},
+  closed: { opacity: 0, y: "400vh", zIndex: 100, display: "block"},
+  vanished: { opacity: 0, y: "400vh", zIndex: 100, display: "none"},
 };
 
-const variantsRight = {
-  open: { opacity: 1, x: 0 },
-  closed: { opacity: 1, x: "140%", overflow: "hidden" },
-};
 
 const IndexTemplate = (props) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState("open");
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { pageContext } = props;
   const { allNotebooks } = pageContext;
 
-  console.log(allNotebooks);
+  //console.log(allNotebooks);
 
   useEffect(() => {
+
+    // after 1 second delay set isOpen to closed
+
+    // another 1 second delay set isOpen to vanished
+
+
     const timer = setTimeout(() => {
-      setIsOpen(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+      setIsOpen("closed");
+    }
+    , 1000);
+
+    const timer2 = setTimeout(() => {
+      setIsOpen("vanished");
+    }
+
+    , 2000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer2);
+    }
+
+    
   }, []);
 
   return (
     <div>
       <motion.nav
-        animate={isOpen ? "open" : "closed"}
+        animate={isOpen}
         variants={variants}
         transition={{ duration: 1.0 }}
       >
         {/* blue background */}
         <div
           style={{
-            backgroundColor: "blue",
-            height: isOpen ? "400vh" : "100vh",
+            backgroundColor: "#060922",
+            //height: isOpen ? "100vh" : "100vh",
+            height: "400vh",
             width: "100%",
             position: "fixed",
             top: 0,
@@ -72,11 +90,11 @@ const IndexTemplate = (props) => {
         />
       </motion.nav>
       <motion.nav
-        animate={isOpen ? "closed" : "open"}
-        variants={variantsRight}
+        animate={isOpen == "open" ? "closed" : "open"}
+        variants={variants}
         transition={{ duration: 1.0 }}
       >
-        <SimpleSidebar>
+        <SimpleSidebar tocList = {{}}>
           <Button
             //marginRight = "1rem"
             //left="1rem"
@@ -117,8 +135,9 @@ const IndexTemplate = (props) => {
                     abstract={notebook.abstract}
                     tag={notebook.tag}
                     link={notebook.htmlName}
+                    image = {notebook.image}
                     onclickfunc={() => {
-                      setIsOpen(true);
+                      setIsOpen("open");
                       // wait 1 second before navigating
                       setTimeout(() => {
                         navigate(notebook.htmlName + "/index.html?v=2");
