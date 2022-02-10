@@ -19,13 +19,16 @@ const BlogPostWithImage = ({
   link,
   tag,
   onclickfunc,
-  image
+  image,
 }) => {
-  console.log(image)
+  console.log(image);
 
-  const imgfile = typeof(image) == 'string' ? `/${image}` : "https://via.placeholder.com/400x300";
-  const imageX = getImage(imgfile)
-  console.log(imgfile)
+  const imgfile =
+    typeof image == "string"
+      ? `/${image}`
+      : "https://via.placeholder.com/400x300";
+
+  console.log(imgfile);
   return (
     <Box
       w={"full"}
@@ -46,10 +49,8 @@ const BlogPostWithImage = ({
       >
         <Image
           src={
-            
-           // if iamge is not none, then use image
-           imgfile
-
+            // if iamge is not none, then use image
+            imgfile
 
             //`../images/${image}`
           }
