@@ -3,3 +3,5 @@ node_modules
 public/
 .venv/
 .env
+
+.DS_Store

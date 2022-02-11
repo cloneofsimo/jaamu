@@ -95,7 +95,10 @@ def build_and_publish():
     print("Symlinking the source codes.")
     cwd = os.getcwd()
     create_symlink(cwd, mount_dir)
-    create_symlink(os.path.join(cwd, "src"), os.path.join(mount_dir, "src"))
+
+    src = os.path.join(cwd, "src")
+    src_mount = os.path.join(mount_dir, "src")
+    create_symlink(src, src_mount)
 
     print("Build gatsby.")
     subprocess.check_output(("npm", "--prefix", mount_dir, "run", "build"))
