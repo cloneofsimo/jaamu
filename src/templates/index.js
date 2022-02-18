@@ -131,6 +131,7 @@ const IndexTemplate = (props) => {
                     tag={notebook.tag}
                     link={notebook.htmlName}
                     image = {notebook.image}
+                    createdDate = {notebook.createdDate}
                     onclickfunc={() => {
                       setIsOpen("open");
                       // wait 1 second before navigating
