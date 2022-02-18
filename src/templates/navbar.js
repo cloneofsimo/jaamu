@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import {
+  Image,
   IconButton,
   Box,
   CloseButton,
@@ -14,22 +15,15 @@ import {
   BoxProps,
   FlexProps,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from "react-icons/fi";
+
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 
 const Toc = ({ tocList, depth }) => {
-  const [hideElement, setHideElement] = useState(false);
+  const [boldtext, setBoldtext] = useState(false);
 
   useEffect(() => {
-  
+
     window.addEventListener("scroll", yScrollEvent);
     return () => {
       window.removeEventListener("scroll", yScrollEvent);
@@ -38,8 +32,8 @@ const Toc = ({ tocList, depth }) => {
 
   const yScrollEvent = () => {
     const scroll = document.getElementById(tocList["link"]?.slice(1))?.getBoundingClientRect();
-    console.log(tocList["link"]);
-    setHideElement(scroll?.top <= 0 && scroll?.bottom >= -300);
+    console.log(scroll);
+    setBoldtext(scroll?.top <= 400);
   };
 
   // if list, then recurse
@@ -64,136 +58,51 @@ const Toc = ({ tocList, depth }) => {
   // if item, then return
   return (
     <li style={{ marginTop: "0.5rem" }}>
-      <a href={tocList["link"]} className="toc-a" style = {{fontWeight : hideElement ? "bold" : "normal"}}>
+      <a href={tocList["link"]} className="toc-a" style={{ fontWeight: boldtext ? "bold" : "normal" }}>
         {tocList["name"]}
       </a>
     </li>
   );
 };
 export default function SimpleSidebar({ children, tocList }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box minH="100vh">
-    {/* //   {/* <SidebarContent
-    //     onClose={() => onClose}
-    //     display={{ base: "none", md: "block" }}
-    //     tocList={tocList}
-    //     className="navbar"
-    //   />
-    //   <Drawer
-    //     autoFocus={false}
-    //     isOpen={isOpen}
-    //     placement="left"
-    //     onClose={onClose}
-    //     returnFocusOnClose={false}
-    //     onOverlayClick={onClose}
-    //   >
-    //     <DrawerContent>
-    //       
-    //     </DrawerContent>
-    //   </Drawer>
-
-    //   mobilenav  
-      <MobileNav display={{ base: "flex", md: 'none'  }} onOpen={onOpen} /> */}
-      <TocContent  tocList={tocList} />
+      <TocContent tocList={tocList} />
       <Box ml={{ base: 0 }} p="4">
         {children}
       </Box>
     </Box>
   );
 }
-const LinkItems = [
-  { name: "Home", icon: FiHome },
-  //{ name: 'Blog Posts', icon: FiTrendingUp },
-  { name: "Blog Posts", icon: FiCompass },
-  { name: "Follow", icon: FiStar },
-  //{ name: 'Settings', icon: FiSettings },
-];
+
 
 
 const TocContent = ({ tocList, ...rest }) => {
   return (
     <Box
-      
-        
-      display = {{ base: "none", xl: "block" }}
+      display={{ base: "none", xl: "block" }}
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        {/* logo */}
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-          JaaMu
-        </Text>
-       
-      </Flex>
-      <Toc tocList={tocList} depth={0} />
-      
-    </Box>
-  );
-};
-
-const NavItem = ({ icon, children, ...rest }) => {
-  return (
-    <Link
-      href="#"
-      style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        marginTop="0.5rem"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: "cyan.400",
-          color: "white",
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: "white",
-            }}
-            as={icon}
+        <Box>
+          <Image
+            src={
+              "/logo_corca03.png"
+            }
+            width="30%"
+            height="30%"
+            objectFit={"cover"}
+            zIndex={-1000}
+            marginTop="30px"
           />
-        )}
-        {children}
+        </Box>
+      
       </Flex>
-    </Link>
-  );
-};
-
-const MobileNav = ({ onOpen, ...rest }) => {
-  return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
-      height="20"
-      alignItems="center"
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
-      {...rest}
-    >
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
-
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
-      </Text>
-    </Flex>
+      {tocList ? <Toc tocList={tocList} /> : null}
+    </Box>
   );
 };

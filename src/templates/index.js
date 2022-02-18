@@ -94,7 +94,7 @@ const IndexTemplate = (props) => {
         variants={variants}
         transition={{ duration: 1.0 }}
       >
-        <SimpleSidebar tocList = {{}}>
+        <SimpleSidebar tocList = {null}>
           <Button
             //marginRight = "1rem"
             //left="1rem"
@@ -108,17 +108,11 @@ const IndexTemplate = (props) => {
           </Button>
           <Container size="xl">
             <Stack align="center" spacing="5" py="10">
-              <Heading as="h1">Welcome To JaaMu!</Heading>
+              <Heading as="h1">Corca Tech Blog</Heading>
               <Text maxWidth="45ch" textAlign="center">
-                Have your <strong>ipynb</strong> research documented right here!
+                Until nobody is marginalized from the technology.
               </Text>
-              <Text>
-                Go Visit{" "}
-                <strong>
-                  <Link to="/notes/introa">The tutorial</Link>
-                </strong>{" "}
-                to see how to upload your notebooks.
-              </Text>
+              
             </Stack>
           </Container>
           <Container size="xl">
@@ -126,6 +120,7 @@ const IndexTemplate = (props) => {
               minChildWidth="300px"
               spacing="10px"
               maxWidth={"1500px"}
+              
             >
               {allNotebooks.map((notebook) => (
                 <div>
