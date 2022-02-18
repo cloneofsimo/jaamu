@@ -131,9 +131,9 @@ const NotebookTemplate = (props) => {
               <FacebookIcon size={40} round={true} />
             </FacebookShareButton>
 
-            <LinkedinShareButton url={path}>
+            {/* <LinkedinShareButton url={path}>
               <LinkedinIcon size={40} round={true} />
-            </LinkedinShareButton>
+            </LinkedinShareButton> */}
 
             <RedditShareButton url={path} title={title}>
               <RedditIcon size={40} round={true} />

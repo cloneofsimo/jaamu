@@ -20,15 +20,16 @@ const BlogPostWithImage = ({
   tag,
   onclickfunc,
   image,
+  createdDate
 }) => {
-  console.log(image);
+  //console.log(image);
 
   const imgfile =
     typeof image == "string"
       ? `/${image}`
       : "https://via.placeholder.com/400x300";
 
-  console.log(imgfile);
+  //console.log(imgfile);
   return (
     <Box
       w={"full"}
@@ -37,6 +38,11 @@ const BlogPostWithImage = ({
       rounded={"md"}
       p={6}
       overflow={"hidden"}
+      maxH = {"550px"}
+      minH = {"550px"}
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent={"space-between"}
     >
       <Box
         h={"210px"}
@@ -46,6 +52,7 @@ const BlogPostWithImage = ({
         mb={6}
         pos={"relative"}
         maxH={"210px"}
+        minH={"210px"}
       >
         <Image
           src={
@@ -67,6 +74,7 @@ const BlogPostWithImage = ({
           fontWeight={800}
           fontSize={"sm"}
           letterSpacing={1.1}
+
         >
           {tag}
         </Text>
@@ -74,10 +82,14 @@ const BlogPostWithImage = ({
           color={useColorModeValue("gray.700", "white")}
           fontSize={"2xl"}
           fontFamily={"body"}
+          height={"50px"}
+          overflow={"hidden"}
+          textOverflow={"ellipsis"}
+          whiteSpace={"nowrap"}
         >
-          {title.slice(0, 30) + (title.length > 30 ? "..." : "")}
+          {title}
         </Heading>
-        <Text color={"gray.500"} height={"60px"}>
+        <Text color={"gray.500"} height={"60px"} >
           {abstract.slice(0, 100) + (abstract.length > 100 ? "..." : "")}
         </Text>
       </Stack>
@@ -88,7 +100,7 @@ const BlogPostWithImage = ({
           /> */}
         <Stack direction={"column"} spacing={0} fontSize={"sm"}>
           <Text fontWeight={600}>{author}</Text>
-          <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
+          <Text color={"gray.500"}>{createdDate}</Text>
         </Stack>
       </Stack>
       <Button onClick={onclickfunc}>Read more</Button>

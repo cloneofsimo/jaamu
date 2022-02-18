@@ -36,13 +36,24 @@ exports.createPages = async ({ actions }) => {
       //console.log(htmlContent);
       const htmlName = html.replace(".html", "");
 
+
       const tocPath = `./src/notebooks/meta/${htmlName}.json`;
       const tocContent = fs.readFileSync(tocPath, "utf8");
       const tocJson = JSON.parse(tocContent);
 
-      
+      const fileCreatedDate = fs.statSync(htmlPath).birthtime;
 
+      // created date to date string format of Feb 07, 2020
+      const fileCreatedDateStr = fileCreatedDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      
       const args = parseFirstP(htmlContent);
+      args['createdDate'] = fileCreatedDateStr;
+      
       args["htmlName"] = `/notes/${htmlName}`;
       all_notebooks.push(args);
       console.log(args);
