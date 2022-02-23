@@ -16,17 +16,19 @@ PUBLIC_DIR = f"{mount_dir}/public/"
 s3 = boto3.resource("s3", region_name="ap-northeast-2")
 
 
-def download_bucket(bucket, target_dir):
-    bucket = s3.Bucket(bucket)
+def download_bucket(bucket_name, target_dir):
+    bucket = s3.Bucket(bucket_name)
+    print(f"Bucket {bucket_name} connected.")
     for obj in bucket.objects.all():
+        print(f"Downloading {obj.key}")
         target = os.path.join(target_dir, obj.key)
         if not os.path.exists(os.path.dirname(target)):
             os.makedirs(os.path.dirname(target))
         bucket.download_file(obj.key, target)
 
 
-def upload_bucket(bucket, source_dir):
-    bucket = s3.Bucket(bucket)
+def upload_bucket(bucket_name, source_dir):
+    bucket = s3.Bucket(bucket_name)
 
     for subdir, dirs, files in os.walk(source_dir):
         for file in files:
@@ -120,4 +122,5 @@ def handler(event, context):
             "message": str(published),
         }
     except Exception as e:
+        print(e)
         return {"status_code": 500, "message": str(e)}

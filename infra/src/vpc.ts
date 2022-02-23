@@ -45,31 +45,59 @@ const natGateway = new aws.ec2.NatGateway(
   }
 );
 
-const publicRouter = new aws.ec2.RouteTable("publicRouter", {
-  vpcId: vpc.id,
-  routes: [
-    {
-      cidrBlock: "0.0.0.0/0",
-      gatewayId: internetGateway.internetGateway.id,
+const publicRouter = new aws.ec2.RouteTable(
+  "publicRouter",
+  {
+    vpcId: vpc.id,
+    routes: [
+      {
+        cidrBlock: "0.0.0.0/0",
+        gatewayId: internetGateway.internetGateway.id,
+      },
+    ],
+    tags: {
+      Name: "jaamuPublicRouter",
     },
-  ],
-  tags: {
-    Name: "jaamuPublicRouter",
   },
-});
+  {
+    dependsOn: [internetGateway],
+  }
+);
 
-const privateRouter = new aws.ec2.RouteTable("privateRouter", {
-  vpcId: vpc.id,
-  routes: [
-    {
-      cidrBlock: "0.0.0.0/0",
-      gatewayId: natGateway.id,
+const publicRouteAssociation = new aws.ec2.RouteTableAssociation(
+  "publicRouteAssociation",
+  {
+    subnetId: publicSubnet.id,
+    routeTableId: publicRouter.id,
+  }
+);
+
+const privateRouter = new aws.ec2.RouteTable(
+  "privateRouter",
+  {
+    vpcId: vpc.id,
+    routes: [
+      {
+        cidrBlock: "0.0.0.0/0",
+        gatewayId: natGateway.id,
+      },
+    ],
+    tags: {
+      Name: "jaamuPrivateRouter",
     },
-  ],
-  tags: {
-    Name: "jaamuPrivateRouter",
   },
-});
+  {
+    dependsOn: [natGateway],
+  }
+);
+
+const privateRouteAssociation = new aws.ec2.RouteTableAssociation(
+  "privateRouteAssociation",
+  {
+    subnetId: privateSubnet.id,
+    routeTableId: privateRouter.id,
+  }
+);
 
 export {
   vpc,
@@ -79,5 +107,7 @@ export {
   eip,
   natGateway,
   publicRouter,
+  publicRouteAssociation,
   privateRouter,
+  privateRouteAssociation,
 };

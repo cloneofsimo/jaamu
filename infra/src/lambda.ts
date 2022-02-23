@@ -10,7 +10,7 @@ config();
 if (
   !process.env.ECR_IMAGE_URI ||
   !process.env.DEBUG ||
-  !process.env.HOME ||
+  !process.env.JAAMU_HOME ||
   !process.env.MOUNT_DIR ||
   !process.env.S3_BLOG_BUCKET ||
   !process.env.S3_CACHE_BUCKET ||
@@ -32,7 +32,7 @@ const lambda = new aws.lambda.Function(
     environment: {
       variables: {
         DEBUG: process.env.DEBUG,
-        HOME: process.env.HOME,
+        HOME: process.env.JAAMU_HOME,
         MOUNT_DIR: process.env.MOUNT_DIR,
         S3_BLOG_BUCKET: process.env.S3_BLOG_BUCKET,
         S3_CACHE_BUCKET: process.env.S3_CACHE_BUCKET,
