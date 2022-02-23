@@ -1,70 +1,60 @@
 import React, { useEffect, useState } from "react";
-import Header from "./header";
-import Footer from "./footer";
-import { ChakraProvider, SimpleGrid } from "@chakra-ui/react";
-import { theme } from "../theme";
-import ReactDOM from "react-dom";
-import { Stack, HStack, VStack } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
-import { Link } from "gatsby";
-import { navigate } from "gatsby";
+import Footer from "../components/footer";
+import { SimpleGrid } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
+import { navigate, PageProps } from "gatsby";
 import { motion } from "framer-motion";
 
 import {
-  useMultiStyleConfig,
-  useColorModeValue,
   Container,
   useColorMode,
   Button,
   Heading,
   Text,
-  Divider,
 } from "@chakra-ui/react";
 
-import SimpleSidebar from "./navbar";
-import BlogPostWithImage from "./blogcard";
-import DARKDARKBLUE from "./notebooksTemplates";
+import SimpleSidebar from "../components/navbar";
+import BlogPostWithImage from "../components/blogcard";
+import { Notebook } from "../lib/types";
 
-const variants = {
-  open: { opacity: 1, y: 0, zIndex: 100, display: "block"},
-  closed: { opacity: 0, y: "400vh", zIndex: 100, display: "block"},
-  vanished: { opacity: 0, y: "400vh", zIndex: 100, display: "none"},
+type IndexTemplateContext = {
+  allNotebooks: Notebook[];
 };
 
+const variants = {
+  open: { opacity: 1, y: 0, zIndex: 100, display: "block" },
+  closed: { opacity: 0, y: "400vh", zIndex: 100, display: "block" },
+  vanished: { opacity: 0, y: "400vh", zIndex: 100, display: "none" },
+};
 
-const IndexTemplate = (props) => {
+const IndexTemplate = (props: PageProps<{}, IndexTemplateContext>) => {
   const [isOpen, setIsOpen] = useState("open");
   const { colorMode, toggleColorMode } = useColorMode();
 
   const { pageContext } = props;
   const { allNotebooks } = pageContext;
 
-  //console.log(allNotebooks);
-
   useEffect(() => {
-
     // after 1 second delay set isOpen to closed
 
     // another 1 second delay set isOpen to vanished
 
-
     const timer = setTimeout(() => {
       setIsOpen("closed");
-    }
-    , 1000);
+    }, 1000);
 
-    const timer2 = setTimeout(() => {
-      setIsOpen("vanished");
-    }
+    const timer2 = setTimeout(
+      () => {
+        setIsOpen("vanished");
+      },
 
-    , 2000);
+      2000
+    );
 
     return () => {
       clearTimeout(timer);
       clearTimeout(timer2);
-    }
-
-    
+    };
   }, []);
 
   return (
@@ -90,11 +80,11 @@ const IndexTemplate = (props) => {
         />
       </motion.nav>
       <motion.nav
-        animate={isOpen == "open" ? "closed" : "open"}
+        animate={isOpen === "open" ? "closed" : "open"}
         variants={variants}
         transition={{ duration: 1.0 }}
       >
-        <SimpleSidebar tocList = {null}>
+        <SimpleSidebar tocList={null}>
           <Button
             //marginRight = "1rem"
             //left="1rem"
@@ -112,7 +102,6 @@ const IndexTemplate = (props) => {
               <Text maxWidth="45ch" textAlign="center">
                 Until nobody is marginalized from the technology.
               </Text>
-              
             </Stack>
           </Container>
           <Container size="xl">
@@ -120,23 +109,16 @@ const IndexTemplate = (props) => {
               minChildWidth="300px"
               spacing="10px"
               maxWidth={"1500px"}
-              
             >
               {allNotebooks.map((notebook) => (
                 <div>
                   <BlogPostWithImage
-                    author={notebook.author}
-                    title={notebook.title}
-                    abstract={notebook.abstract}
-                    tag={notebook.tag}
-                    link={notebook.htmlName}
-                    image = {notebook.image}
-                    createdDate = {notebook.createdDate}
+                    notebook={notebook}
                     onclickfunc={() => {
                       setIsOpen("open");
                       // wait 1 second before navigating
                       setTimeout(() => {
-                        navigate(notebook.htmlName + "/index.html?v=2");
+                        navigate(notebook.name);
                       }, 1000);
                     }}
                   />

@@ -3,47 +3,23 @@ import {
   Box,
   Container,
   Stack,
-  SimpleGrid,
   Text,
   Link,
   VisuallyHidden,
   chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 
-const katex_foot = String.raw`
-<script>
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted || 
-                         ( typeof window.performance != "undefined" && 
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    // Handle page restore.
-    window.location.reload();
-  }
-});
-renderMathInElement(document.body, {
-  delimiters: [
-        {left: '$$', right: '$$', display: true},
-        {left: '$', right: '$', display: false},
-        {left: '\\(', right: '\\)', display: false},
-        {left: '\\[', right: '\\]', display: true}
-    ],
-  strict : "ignore",
-  });
-</script>
-
-`;
-const ListHeader = ({ children }) => {
-  return (
-    <Text fontWeight={"500"} fontSize={"lg"} mb={2}>
-      {children}
-    </Text>
-  );
-};
-
-const SocialButton = ({ children, label, href }) => {
+const SocialButton = ({
+  children,
+  label,
+  href,
+}: {
+  children: React.ReactNode;
+  label: string;
+  href: string;
+}) => {
   return (
     <chakra.button
       bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
@@ -70,8 +46,6 @@ const SocialButton = ({ children, label, href }) => {
 export default function Footer() {
   return (
     <Box>
-      <div dangerouslySetInnerHTML={{ __html: katex_foot }} />
-
       <Container maxW={"6xl"} py={4}>
         <Stack
           direction={{ base: "column", md: "row" }}

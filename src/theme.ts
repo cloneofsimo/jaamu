@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints, mode } from "@chakra-ui/theme-tools";
 import Container from "./chakra/container";
 
@@ -150,7 +150,6 @@ const theme = extendTheme({
         padding: "8.5px",
         wordBreak: "break-all",
         wordWrap: "break-word",
-        color: "#333333",
         whiteSpace: "pre-wrap",
         color: props.colorMode === "dark" ? "white" : darkblue,
       },

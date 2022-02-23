@@ -1,17 +1,13 @@
 const fs = require("fs");
 
-const parseFirstP = (htmlContent) => {
-  const firstP = htmlContent.split("<p>")[1].split("</p>")[0];
-  // firstP is form of !key:value\n!key:value... parse it
-  const firstPObj = {};
-  const firstPArr = firstP.split("\n");
-  firstPArr.forEach((line) => {
+const parseMetadata = (content) => {
+  const metadata = {};
+  content.split("\n").forEach((line) => {
     const key = line.split(":")[0];
-    // rest of line is value
     const value = line.split(":").slice(1).join(":").trim();
-    firstPObj[key] = value;
+    metadata[key] = value;
   });
-  return firstPObj;
+  return metadata;
 };
 
 const afterdivs = (htmlContent) => {
@@ -25,81 +21,64 @@ exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
   // read html files from ./src/notebooks/
   const notebooks = fs.readdirSync("./src/notebooks/compiled_htmls");
-  // console.log(notebooks);
   const all_notebooks = [];
-  notebooks.forEach((html) => {
-    if (html.endsWith(".html")) {
-      const htmlPath = `./src/notebooks/compiled_htmls/${html}`;
+  notebooks.forEach((notebook) => {
+    const filepath = `./src/notebooks/compiled_htmls/${notebook}`;
+    const name = notebook.split(".")[0];
+    const tocContent = fs.readFileSync(
+      `./src/notebooks/meta/${name}.json`,
+      "utf8"
+    );
+    const tocJson = JSON.parse(tocContent);
+    const fileCreatedDate = fs.statSync(filepath).birthtime;
+    const createdDate = fileCreatedDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
 
-      const htmlContent = fs.readFileSync(htmlPath, "utf8");
+    const metadata = {
+      type: notebook.split(".")[1],
+    };
 
-      //console.log(htmlContent);
-      const htmlName = html.replace(".html", "");
-
-
-      const tocPath = `./src/notebooks/meta/${htmlName}.json`;
-      const tocContent = fs.readFileSync(tocPath, "utf8");
-      const tocJson = JSON.parse(tocContent);
-
-      const fileCreatedDate = fs.statSync(htmlPath).birthtime;
-
-      // created date to date string format of Feb 07, 2020
-      const fileCreatedDateStr = fileCreatedDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-
-      
-      const args = parseFirstP(htmlContent);
-      args['createdDate'] = fileCreatedDateStr;
-      
-      args["htmlName"] = `/notes/${htmlName}`;
-      all_notebooks.push(args);
-      console.log(args);
-      createPage({
-        path: `/notes/${htmlName}`,
-        component: require.resolve("./src/templates/notebooksTemplates.js"),
-        context: {
-          path: `/notes/${htmlName}`,
-          htmlArgs: args,
-          htmlContent: afterdivs(htmlContent),
-          tocList: tocJson["TOC"],
-        },
-      });
+    let content = fs.readFileSync(filepath, "utf8");
+    if (metadata.type === "html") {
+      Object.assign(
+        metadata,
+        parseMetadata(content.split("<p>")[1].split("</p>")[0])
+      );
+      content = afterdivs(content);
+    } else if (metadata.type === "md") {
+      Object.assign(metadata, parseMetadata(content.split("\n\n")[0]));
+      content = content.split("\n\n").slice(1).join("\n\n");
+    } else {
+      console.log("Unknown file type");
     }
+
+    const args = {
+      createdDate,
+      name: `/notes/${name}`,
+      ...metadata,
+    };
+
+    all_notebooks.push(args);
+    createPage({
+      path: `/notes/${name}`,
+      component: require.resolve("./src/templates/notebooksTemplates.tsx"),
+      context: {
+        route: `/notes/${name}`,
+        args,
+        content,
+        tocList: tocJson["TOC"],
+      },
+    });
   });
 
   createPage({
     path: `/`,
-    component: require.resolve("./src/templates/index.js"),
+    component: require.resolve("./src/templates/index.tsx"),
     context: {
       allNotebooks: all_notebooks,
     },
   });
 };
-
-// const getNotebooks = () =>{
-
-// }
-
-// exports.createPages = async ({ actions: { createPage } }) => {
-//   // `getPokemonData` is a function that fetches our data
-//   const allPokemon = await getNotebooks();
-
-//   // Create a page that lists all Pokémon.
-//   createPage({
-//     path: `/`,
-//     component: require.resolve("./src/templates/all-pokemon.js"),
-//     context: { allPokemon },
-//   })
-
-//   // Create a page for each Pokémon.
-//   allPokemon.forEach(pokemon => {
-//     createPage({
-//       path: `/pokemon/${pokemon.name}/`,
-//       component: require.resolve("./src/templates/pokemon.js"),
-//       context: { pokemon },
-//     })
-//   })
-// }

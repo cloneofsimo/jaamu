@@ -1,29 +1,23 @@
-import { Link } from "gatsby";
 import {
   Image,
   Box,
-  Center,
   Heading,
   Text,
   Stack,
-  Avatar,
   useColorModeValue,
   Button,
 } from "@chakra-ui/react";
 import React from "react";
-import { getImage, StaticImage } from "gatsby-plugin-image";
-const BlogPostWithImage = ({
-  author,
-  title,
-  abstract,
-  link,
-  tag,
-  onclickfunc,
-  image,
-  createdDate
-}) => {
-  //console.log(image);
 
+import { Notebook } from "../lib/types";
+
+const BlogPostWithImage = ({
+  notebook: { author, title, abstract, tag, name, image, createdDate },
+  onclickfunc,
+}: {
+  notebook: Notebook;
+  onclickfunc: () => void;
+}) => {
   const imgfile =
     typeof image == "string"
       ? `/${image}`
@@ -38,8 +32,8 @@ const BlogPostWithImage = ({
       rounded={"md"}
       p={6}
       overflow={"hidden"}
-      maxH = {"550px"}
-      minH = {"550px"}
+      maxH={"550px"}
+      minH={"550px"}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"space-between"}
@@ -74,7 +68,6 @@ const BlogPostWithImage = ({
           fontWeight={800}
           fontSize={"sm"}
           letterSpacing={1.1}
-
         >
           {tag}
         </Text>
@@ -89,7 +82,7 @@ const BlogPostWithImage = ({
         >
           {title}
         </Heading>
-        <Text color={"gray.500"} height={"60px"} >
+        <Text color={"gray.500"} height={"60px"}>
           {abstract.slice(0, 100) + (abstract.length > 100 ? "..." : "")}
         </Text>
       </Stack>
