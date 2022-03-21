@@ -4,16 +4,17 @@ module.exports = {
     title: "simoryu blog",
   },
   plugins: [
+    "gatsby-plugin-react-helmet",
     "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-plugin-typescript`,
       options: {
-        name: "images",
-        path: "./src/images/",
+        isTSX: true,
+        jsxPragma: `jsx`,
+        allExtensions: true,
       },
-      __key: "images",
     },
     {
       resolve: "gatsby-source-filesystem",

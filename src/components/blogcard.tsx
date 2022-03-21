@@ -1,31 +1,29 @@
-import { Link } from "gatsby";
 import {
   Image,
   Box,
-  Center,
   Heading,
   Text,
   Stack,
-  Avatar,
   useColorModeValue,
   Button,
 } from "@chakra-ui/react";
 import React from "react";
-import { getImage, StaticImage } from "gatsby-plugin-image";
-const BlogPostWithImage = ({
-  author,
-  title,
-  abstract,
-  link,
-  tag,
-  onclickfunc,
-  image
-}) => {
-  console.log(image)
 
-  const imgfile = typeof(image) == 'string' ? `/${image}` : "https://via.placeholder.com/400x300";
-  const imageX = getImage(imgfile)
-  console.log(imgfile)
+import { Notebook } from "../lib/types";
+
+const BlogPostWithImage = ({
+  notebook: { author, title, abstract, tag, name, image, createdDate },
+  onclickfunc,
+}: {
+  notebook: Notebook;
+  onclickfunc: () => void;
+}) => {
+  const imgfile =
+    typeof image == "string"
+      ? `/${image}`
+      : "https://via.placeholder.com/400x300";
+
+  //console.log(imgfile);
   return (
     <Box
       w={"full"}
@@ -34,6 +32,11 @@ const BlogPostWithImage = ({
       rounded={"md"}
       p={6}
       overflow={"hidden"}
+      maxH={"550px"}
+      minH={"550px"}
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent={"space-between"}
     >
       <Box
         h={"210px"}
@@ -43,13 +46,12 @@ const BlogPostWithImage = ({
         mb={6}
         pos={"relative"}
         maxH={"210px"}
+        minH={"210px"}
       >
         <Image
           src={
-            
-           // if iamge is not none, then use image
-           imgfile
-
+            // if iamge is not none, then use image
+            imgfile
 
             //`../images/${image}`
           }
@@ -73,8 +75,12 @@ const BlogPostWithImage = ({
           color={useColorModeValue("gray.700", "white")}
           fontSize={"2xl"}
           fontFamily={"body"}
+          height={"50px"}
+          overflow={"hidden"}
+          textOverflow={"ellipsis"}
+          whiteSpace={"nowrap"}
         >
-          {title.slice(0, 30) + (title.length > 30 ? "..." : "")}
+          {title}
         </Heading>
         <Text color={"gray.500"} height={"60px"}>
           {abstract.slice(0, 100) + (abstract.length > 100 ? "..." : "")}
@@ -87,7 +93,7 @@ const BlogPostWithImage = ({
           /> */}
         <Stack direction={"column"} spacing={0} fontSize={"sm"}>
           <Text fontWeight={600}>{author}</Text>
-          <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
+          <Text color={"gray.500"}>{createdDate}</Text>
         </Stack>
       </Stack>
       <Button onClick={onclickfunc}>Read more</Button>
