@@ -43,9 +43,54 @@ const variants = {
   closed: { opacity: 0, y: "100vh", zIndex: 100 },
 };
 
-const _hacky_require_js = String.raw`
-<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>`
+const _hacky_bundle = String.raw`
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.6/katex.min.css"
+></link>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.6/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.6/contrib/auto-render.min.js"></script>
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+<style type="text/css">
+pre { line-height: 125%;}
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.katex-display > .katex {
+    max-width: 100%;
+}
+.katex-display > .katex > .katex-html {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+</style>`
 
+const _katex_foot = String.raw`
+<script>
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+renderMathInElement(document.body, {
+  delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+    ],
+  strict : "ignore",
+  });
+</script>
+`
 
 type NotebookTemplateContext = {
   route: string;
@@ -83,9 +128,9 @@ const NotebookTemplate = (props: PageProps<{}, NotebookTemplateContext>) => {
   return (
     <div>
       <div>
-        <div dangerouslySetInnerHTML={{ __html: _hacky_require_js }} />
+        <div dangerouslySetInnerHTML={{ __html: _hacky_bundle }} />
       </div>
-      <Helmet>
+      {/* <Helmet>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
@@ -98,10 +143,9 @@ const NotebookTemplate = (props: PageProps<{}, NotebookTemplateContext>) => {
           integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
           crossOrigin="anonymous"
         ></script>
-        <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
         <link rel="stylesheet" href="/global.css" />
         <script type="module" src="/katex.js" />
-      </Helmet>
+      </Helmet> */}
       <motion.nav
         animate={isOpen ? "open" : "closed"}
         variants={variants}
@@ -209,6 +253,7 @@ const NotebookTemplate = (props: PageProps<{}, NotebookTemplateContext>) => {
 
         <Footer />
       </SimpleSidebar>
+      <div dangerouslySetInnerHTML={{__html : _katex_foot}} />
     </div>
   );
 };
