@@ -43,6 +43,10 @@ const variants = {
   closed: { opacity: 0, y: "100vh", zIndex: 100 },
 };
 
+const _hacky_require_js = String.raw`
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>`
+
+
 type NotebookTemplateContext = {
   route: string;
   args: {
@@ -78,6 +82,9 @@ const NotebookTemplate = (props: PageProps<{}, NotebookTemplateContext>) => {
 
   return (
     <div>
+      <div>
+        <div dangerouslySetInnerHTML={{ __html: _hacky_require_js }} />
+      </div>
       <Helmet>
         <link
           rel="stylesheet"
