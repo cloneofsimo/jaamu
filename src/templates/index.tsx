@@ -118,7 +118,7 @@ const IndexTemplate = (props: PageProps<{}, IndexTemplateContext>) => {
                       setIsOpen("open");
                       // wait 1 second before navigating
                       setTimeout(() => {
-                        navigate(notebook.name);
+                        navigate(notebook.name + ".html?v=2");
                       }, 1000);
                     }}
                   />
