@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, Box, Flex } from "@chakra-ui/react";
+import { Image, Box, Flex, Link } from "@chakra-ui/react";
 import { Toc } from "../lib/types";
 
 const TocComponent = ({
@@ -71,14 +71,16 @@ export default function SimpleSidebar({ children, tocList }) {
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
           <Box>
-            <Image
-              src={"/logo_corca03.png"}
-              width="30%"
-              height="30%"
-              objectFit={"cover"}
-              zIndex={-1000}
-              marginTop="30px"
-            />
+            <Link href="/">
+              <Image
+                src={"/logo_corca03.png"}
+                width="30%"
+                height="30%"
+                objectFit={"cover"}
+                zIndex={-1000}
+                marginTop="30px"
+              />
+            </Link>
           </Box>
         </Flex>
         {tocList ? <TocComponent tocList={tocList} depth={0} /> : null}
