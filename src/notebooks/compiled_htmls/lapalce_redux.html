@@ -32,14 +32,14 @@ $$<p>물론 이 intergral 은 계산이 불가능하기에, monte-carlo 하게 �
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Laplace-Approximation">Laplace Approximation<a class="anchor-link" href="#Laplace-Approximation">&#182;</a></h1><p>그럼 저희의 목표는 $P(\theta, D)$ 를 구하는 것이죠. 한편 이런 생각을 할 수 있지 않을까요?</p>
-<p><strong>$P(\theta)$ 는 사실 $N(\theta_{\text{best}}, \Sigma)$ 이지 않을까?</strong></p>
+<p><strong>$P(\theta | D)$ 는 사실 $N(\theta_{\text{best}}, \Sigma)$ 이지 않을까?</strong></p>
 <p>상당한 주장입니다. MAP 로 구한 $\theta_{\text{best}}$ 근방의 모델만을 기반으로 $P(\theta, D)$ 를 근사하겠다는 생각이죠. 더 멀리 떨어진 $\theta$ 는 모델의 학습 과정이 만든 것으로 불충분하다는 생각입니다. 그럼 "어떤 근방" 을 "어떻게" 구하여 사용한다는 건가요? 이는 $p$ 가 exponetial family 라는 것을 착안하여, "가장 적합한 가우시안" 으로 생각합니다.</p>
 <p><em>참고 :왜 Exponential family 냐구요?</em></p>
 $$
 P(D | \theta) \propto \exp (\sum_{x, y} l(f_\theta(x), y))
 $$<p>꼴로 모델링합니다. $l(\hat{y},y) $ 는 어떤 criterion (Loss function) 이고요, 여기에 gaussian prior 를 자주 사용하기에 결국</p>
 $$
-P(\theta | D) \propto \exp \exp (\sum_{x, y} l(f_\theta(x), y)) - \gamma \sum_{\theta} \theta^2)
+P(\theta | D) \propto \exp (\sum_{x, y} l(f_\theta(x), y)) - \gamma \sum_{\theta} \theta^2)
 $$<p>등의 모습이 됩니다.</p>
 <p>그래서 자주 $\exp$ 로 나타나는건 알겠고, 이걸 많이 생략해서 $q(\theta) := P(\theta | D) = 1/ Z \exp (\sum_{x, y} l(f_\theta(x), y)) - \gamma \sum_{\theta} \theta^2) := 1/Z \exp(h(\theta))$ 로 생각합시다.</p>
 <p>이제 $h(\theta)$ 를 <em>이차 테일러 근사</em> 해봅시다</p>
@@ -50,37 +50,11 @@ $$<p>오잉? 왜 일차항은 없어졌죠? 맞습니다. 저흰 $\theta_{\text{
 $$
 \exp(-\frac{1}{2} (\theta - \theta_{\text{best}})^T \Sigma^{-1} (\theta - \theta_{\text{best}}))
 $$<p>처럼 생겼습니다. 어? 둘이 비슷하네요~ 앞에 있는 값은 normalizing term $Z$ 로 빠진다고 생각하고, 저 이차항 사이에 있는 값만 맞추면 되겠습니다. 그럼 저희의 approximation 은 다음과 같아집니다. 이를 <em>Laplace Approximation</em> 이라 합니다.</p>
-<p>$$
-p(\theta | D) \sim N(\theta, \theta<em>{\text{best}} \Sigma^{-1}), \Sigma = -\nabla^2</em>\theta L(D, \theta) |^{-1}<em>{\theta</em>{\text{best}}}</p>
-
+$$
+p(\theta | D) \sim N(\theta, \theta_{\text{best}} \Sigma^{-1}), \Sigma = -\nabla^2_\theta L(D, \theta) |^{-1}_{\theta_{\text{best}}}
+$$
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-python"><pre><span></span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-python"><pre><span></span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">

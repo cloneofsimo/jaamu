@@ -10,6 +10,7 @@ import {
 import React from "react";
 
 import { Notebook } from "../lib/types";
+import './blogcard.css'
 
 const BlogPostWithImage = ({
   notebook: { author, title, abstract, tag, name, image, createdDate },
@@ -72,13 +73,12 @@ const BlogPostWithImage = ({
           {tag}
         </Text>
         <Heading
+          id = "cardtitle"
           color={useColorModeValue("gray.700", "white")}
           fontSize={"2xl"}
           fontFamily={"body"}
-          height={"50px"}
-          overflow={"hidden"}
-          textOverflow={"ellipsis"}
-          whiteSpace={"nowrap"}
+          height={"4rem"}
+          
         >
           {title}
         </Heading>
