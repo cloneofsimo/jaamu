@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 import { Notebook } from "../lib/types";
-import './blogcard.css'
+import "./blogcard.css";
 
 const BlogPostWithImage = ({
   notebook: { author, title, abstract, tag, name, image, createdDate },
@@ -50,6 +50,7 @@ const BlogPostWithImage = ({
         minH={"210px"}
       >
         <Image
+          cursor="pointer"
           src={
             // if iamge is not none, then use image
             imgfile
@@ -60,6 +61,7 @@ const BlogPostWithImage = ({
           height="100%"
           objectFit={"cover"}
           zIndex={-1000}
+          onClick={onclickfunc}
         />
       </Box>
       <Stack>
@@ -73,12 +75,13 @@ const BlogPostWithImage = ({
           {tag}
         </Text>
         <Heading
-          id = "cardtitle"
+          id="cardtitle"
           color={useColorModeValue("gray.700", "white")}
           fontSize={"2xl"}
           fontFamily={"body"}
           height={"4rem"}
-          
+          onClick={onclickfunc}
+          cursor="pointer"
         >
           {title}
         </Heading>
