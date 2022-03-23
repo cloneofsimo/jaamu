@@ -36,6 +36,7 @@ import SimpleSidebar from "../components/navbar";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
+
 const DARKDARKBLUE = "#060922";
 
 const variants = {
