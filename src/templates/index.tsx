@@ -27,10 +27,12 @@ const variants = {
   vanished: { opacity: 0, y: "400vh", zIndex: 100, display: "none" },
 };
 
+
+
 const IndexTemplate = (props: PageProps<{}, IndexTemplateContext>) => {
   const [isOpen, setIsOpen] = useState("open");
   const { colorMode, toggleColorMode } = useColorMode();
-
+  
   const { pageContext } = props;
   const { allNotebooks } = pageContext;
 
@@ -51,9 +53,15 @@ const IndexTemplate = (props: PageProps<{}, IndexTemplateContext>) => {
       2000
     );
 
+    const repeater = setInterval(() => {
+      setIsOpen("vanished");
+    }, 3000);
+
+
     return () => {
       clearTimeout(timer);
       clearTimeout(timer2);
+      clearInterval(repeater);
     };
   }, []);
 
