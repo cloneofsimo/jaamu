@@ -1,5 +1,7 @@
 const fs = require("fs");
 
+const  must_have_keys = ["author", "tag", "title", "abstract", "image"];
+
 const parseMetadata = (content) => {
   const metadata = {};
   content.split("\n").forEach((line) => {
@@ -7,6 +9,23 @@ const parseMetadata = (content) => {
     const value = line.split(":").slice(1).join(":").trim();
     metadata[key] = value;
   });
+
+  /*
+  author: Vender La
+tag: Tutorial
+title: Example Markdown 123456123456123456123456123456
+abstract:  This contains Example markdown
+image: sin_cos.png
+  */
+ 
+  must_have_keys.forEach((key) => {
+    if (!metadata[key]) {
+      throw new Error(`${key} is missing`);
+    }
+  });
+  // strip, make lowercase, and replace spaces with dashes for tag
+  metadata['tag'] = metadata['tag'].toLowerCase().replace(/\s/g, "-");
+
   return metadata;
 };
 
@@ -22,6 +41,9 @@ exports.createPages = async ({ actions }) => {
   // read html files from ./src/notebooks/
   const notebooks = fs.readdirSync("./src/notebooks/compiled_htmls");
   const all_notebooks = [];
+  const tag_notebook_li = {};
+
+
   notebooks.forEach((notebook) => {
     const filepath = `./src/notebooks/compiled_htmls/${notebook}`;
     const name = notebook.split(".")[0];
@@ -61,6 +83,14 @@ exports.createPages = async ({ actions }) => {
       ...metadata,
     };
 
+    const tag = metadata.tag;
+    if (tag) {
+      if (!tag_notebook_li[tag]) {
+        tag_notebook_li[tag] = [];
+      }
+      tag_notebook_li[tag].push(args);
+    }
+
     all_notebooks.push(args);
     createPage({
       path: `/notes/${name}`,
@@ -81,4 +111,17 @@ exports.createPages = async ({ actions }) => {
       allNotebooks: all_notebooks,
     },
   });
+
+  // create page per tag
+  Object.keys(tag_notebook_li).forEach((tag) => {
+    createPage({
+      path: `/tags/${tag}`,
+      component: require.resolve("./src/templates/tagPage.tsx"),
+      context: {
+        tag,
+        tagNotebooks: tag_notebook_li[tag],
+      },
+    });
+  }
+  );
 };
