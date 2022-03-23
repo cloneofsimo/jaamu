@@ -143,6 +143,9 @@ const theme = extendTheme({
         listStyle: "circle",
         paddingLeft: "2em",
       },
+      ol: {
+        paddingLeft: "2em",
+      },
       pre: {
         marginTop: BASEMARGIN,
         marginBottom: BASEMARGIN,
