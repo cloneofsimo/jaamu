@@ -49,3 +49,12 @@ jobs:
           echo ${{ steps.docker_build.outputs.digest }}
       - name: Deploy new Image at Lambda
         run: aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_BUILDER }} --image-uri ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
+      - name: Wait until Lambda function is updated
+        run: aws lambda wait function-updated --function-name ${{ secrets.AWS_LAMBDA_BUILDER }}
+      - name: Invoke Lambda function
+        run: aws lambda invoke \
+          --function-name ${{ secrets.AWS_LAMBDA_BUILDER }} \
+          --invocation-type Event \
+          --cli-binary-format raw-in-base64-out \
+          --payload '{"update_all":true}' \
+          /dev/stdout
