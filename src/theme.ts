@@ -191,9 +191,9 @@ const theme = extendTheme({
         display: "block",
         marginTop: "1em",
         marginBottom: "1em",
-        backgroundColor: "#f0f0f0",
-        borderLeft: "5px solid #107d0e",
+        borderLeft: "5px solid #008000",
         padding: "8.5px 0px 0px 15px",
+        backgroundColor: props.colorMode === "dark" ? "#303030" : "#f0f0f0",
       },
       "blockquote blockquote": {
         margin: "0em",
