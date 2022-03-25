@@ -140,7 +140,15 @@ const theme = extendTheme({
         background: mode("#F0F0F0", "#303030")(props),
       },
       ul: {
+        listStyle: "inside",
+        paddingLeft: "2em",
+      },
+      "ul ul": {
         listStyle: "circle",
+        paddingLeft: "2em",
+      },
+      "ul ul ul": {
+        listStyle: "square",
         paddingLeft: "2em",
       },
       ol: {
@@ -156,16 +164,40 @@ const theme = extendTheme({
         whiteSpace: "pre-wrap",
         color: props.colorMode === "dark" ? "white" : darkblue,
       },
+      "p code": {
+        margin: "0em 0.25em",
+        padding: "0.1em 0.5em",
+        borderRadius: "10px",
+        color: "#107d0e",
+        backgroundColor: "#f0f0f0",
+      },
+      img: {
+        padding: "auto",
+      },
       "div.twitter-tweet": {
         margin: "0 auto",
       },
+      a: {
+        textDecoration: "underline",
+      },
       "a.toc-a": {
+        textDecoration: "none",
         "&:hover": {
           color: props.colorMode === "dark" ? "lightblue" : darkblue,
           fontWeight: "bold",
         },
       },
-
+      blockquote: {
+        display: "block",
+        marginTop: "1em",
+        marginBottom: "1em",
+        backgroundColor: "#f0f0f0",
+        borderLeft: "5px solid #107d0e",
+        padding: "8.5px 0px 0px 15px",
+      },
+      "blockquote blockquote": {
+        margin: "0em",
+      },
       //table html
       table: {
         marginTop: BASEMARGIN,
@@ -178,11 +210,14 @@ const theme = extendTheme({
         marginLeft: "auto",
         marginRight: "auto",
       },
-      "div.output th, div.output td, div.output tr": {
-        //center table
-        padding: "5px",
+      th: {
         border:
           props.colorMode === "dark" ? "1px solid white" : "1px solid black",
+      },
+      "tr td": {
+        border:
+          props.colorMode === "dark" ? "1px solid white" : "1px solid black",
+        padding: "5px 10px",
       },
       ".output_html": {
         color: props.colorMode === "dark" ? "white" : darkblue,
@@ -202,21 +237,35 @@ const theme = extendTheme({
       h2: {
         marginTop: BASEMARGIN,
         marginBottom: BASEMARGIN,
-        fontSize: "2em",
+        fontSize: "2.25em",
         fontWeight: "bold",
         color: props.colorMode === "dark" ? "white" : darkblue,
       },
       h3: {
         marginTop: BASEMARGIN,
         marginBottom: BASEMARGIN,
-        fontSize: "1.5em",
+        fontSize: "2em",
         fontWeight: "bold",
         color: props.colorMode === "dark" ? "white" : darkblue,
       },
       h4: {
         marginTop: BASEMARGIN,
         marginBottom: BASEMARGIN,
-        fontSize: "1.25em",
+        fontSize: "1.75em",
+        fontWeight: "bold",
+        color: props.colorMode === "dark" ? "white" : darkblue,
+      },
+      h5: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
+        fontSize: "1.5em",
+        fontWeight: "bold",
+        color: props.colorMode === "dark" ? "white" : darkblue,
+      },
+      h6: {
+        marginTop: BASEMARGIN,
+        marginBottom: BASEMARGIN,
+        fontSize: "1em",
         fontWeight: "bold",
         color: props.colorMode === "dark" ? "white" : darkblue,
       },
